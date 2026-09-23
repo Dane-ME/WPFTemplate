@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".template.config/template.json" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="template.Application/template.Application.csproj" />
+  <Project Path="template.Domain/template.Domain.csproj" />
+  <Project Path="template.Infrastructure/template.Infrastructure.csproj" />
+  <Project Path="template.wpf/template.wpf.csproj" />
+</Solution>
