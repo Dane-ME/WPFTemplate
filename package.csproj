@@ -1,13 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PackageType>Template</PackageType>
-    <PackageVersion>1.0.0</PackageVersion>
     <PackageId>WpfCleanArchNavTemplate</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
     <Title>WPF Clean Architecture MVVM Navigation Template</Title>
-    <Authors>Antigravity</Authors>
-    <Description>WPF MVVM Clean Architecture template with LRU Cached Navigation Service and DI</Description>
-    <PackageTags>dotnet-new;templates;wpf;mvvm;clean-architecture</PackageTags>
+    <Authors>Dane</Authors>
+    <Company>Dane</Company>
+    <Description>Enterprise-ready WPF MVVM Clean Architecture template featuring LRU cached
+      Navigation Service, back-stack history, async cancellation tokens, and Microsoft Dependency
+      Injection.</Description>
+    <PackageTags>
+      dotnet-new;templates;wpf;mvvm;clean-architecture;navigation;lru-cache;dependency-injection;csharp</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- Tuỳ chọn: Điền URL Github của bạn vào 2 thẻ dưới -->
+    <!-- <PackageProjectUrl>https://github.com/your-username/your-repo</PackageProjectUrl> -->
+    <RepositoryUrl>https://github.com/Dane-ME/template</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Initial release of WPF Clean Architecture MVVM Navigation Template.</PackageReleaseNotes>
+
     <TargetFramework>netstandard2.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
@@ -15,6 +28,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="**\*" Exclude="**\bin\**;**\obj\**;**\.vs\**;**\.git\**;template.slnx;*.nupkg;package.csproj" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <Content Include="**\*"
+      Exclude="**\bin\**;**\obj\**;**\.vs\**;**\.git\**;template.slnx;*.nupkg;package.csproj;dist\**" />
   </ItemGroup>
 </Project>

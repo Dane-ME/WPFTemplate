@@ -1,80 +1,109 @@
 # WPF Clean Architecture MVVM Navigation Template
 
-Template dự án WPF chuẩn MVVM kết hợp Clean Architecture, tích hợp sẵn hệ thống Navigation tối ưu hiệu năng (LRU Cache, Back-stack, Hỗ trợ Async & CancellationToken) và Microsoft Dependency Injection.
+A production-ready WPF project template implementing MVVM and Clean Architecture principles, featuring a high-performance Navigation Service (LRU Cache, Back-stack, Async & CancellationToken support) and Microsoft Dependency Injection.
 
 ---
 
-## 1. Mục Đích
+## 1. Purpose
 
-- Cung cấp một boilerplate chuẩn mực để khởi tạo nhanh các ứng dụng WPF Enterprise / Desktop.
-- Giải quyết triệt để các vấn đề thường gặp trong WPF navigation:
-  - Giật lag do khởi tạo View/ViewModel lặp lại.
-  - Rò rỉ bộ nhớ do không quản lý vòng đời ViewModel.
-  - Race condition khi người dùng chuyển trang liên tục trong lúc đang load dữ liệu async.
-  - Phụ thuộc chéo giữa View và ViewModel.
-
----
-
-## 2. Ưu Điểm
-
-- **Tách bạch tầng theo Clean Architecture:**
-  - `Domain`: Chứa các quy tắc cốt lõi và Result Pattern không phụ thuộc bên ngoài.
-  - `Application`: Định nghĩa Use Cases, Business Logic, Interfaces.
-  - `Infrastructure`: Thực thi các dịch vụ ngoại vi, truy xuất dữ liệu, API.
-  - `Presentation (WPF)`: Giao diện thuần MVVM, View tự phân giải qua DataTemplate mapping dựa trên kiểu ViewModel.
-- **Cơ chế Navigation mạnh mẽ:**
-  - **LRU Cache & Lazy Factory:** Chỉ khởi tạo ViewModel khi cần, tự giải phóng instance cũ nhất khi vượt ngưỡng cache (`maxCacheSize`).
-  - **Back-Stack History:** Hỗ trợ điều hướng lùi (`GoBack()`, `GoBackAsync()`).
-  - **Async Navigation & Cancellation Token:** Tự động hủy task load ngầm trước đó nếu người dùng chuyển trang nhanh liên tục.
-  - **Lifecycle Hook (`INavigationAware`):** Hỗ trợ `OnNavigatedTo`, `OnNavigatedToAsync`, `CanNavigateFrom`, `CanNavigateFromAsync`.
-- **DI Composition Root chuẩn:** Cấu hình toàn bộ trong `App.xaml.cs`.
+- Provide a standardized boilerplate for rapidly scaffolding enterprise and modern desktop WPF applications.
+- Completely resolve common issues in WPF navigation:
+  - UI freezes/lag caused by repetitive View/ViewModel instantiation.
+  - Memory leaks due to unmanaged ViewModel lifecycles.
+  - Race conditions caused by rapid page-switching while background async operations are running.
+  - Tight coupling between Views and ViewModels.
 
 ---
 
-## 3. Giới Hạn
+## 2. Key Features
 
-- Chưa tích hợp sẵn Dialog Service / Popup Modal dạng đa cửa sổ (tập trung vào ContentControl Navigation trong Single-Window).
-- Chưa tích hợp EventAggregator / Messenger cho các ViewModel không cùng phân nhánh giao tiếp trực tiếp.
-- `ContentControl` mặc định không có hiệu ứng chuyển cảnh (Transitions/Animations). Nếu cần hiệu ứng mượt mà, cần bổ sung Storyboard/VisualStateManager.
+- **Layer Separation via Clean Architecture:**
+  - `Domain`: Core enterprise business rules and external-dependency-free Result Pattern.
+  - `Application`: Use Cases, business logic orchestration, and interface abstractions.
+  - `Infrastructure`: External services, data persistence, and API clients.
+  - `Presentation (WPF)`: Pure MVVM presentation layer; Views are resolved automatically via `DataTemplate` mapping based on the ViewModel type.
+- **Robust Navigation Engine:**
+  - **LRU Cache & Lazy Factory:** ViewModels are instantiated on-demand and automatically evicted/disposed when exceeding the cache limit (`maxCacheSize`).
+  - **Back-Stack History:** Full backward navigation support (`GoBack()`, `GoBackAsync()`).
+  - **Async Navigation & Cancellation Token:** Automatically cancels pending background data-loading tasks if the user navigates away rapidly.
+  - **Lifecycle Hooks (`INavigationAware`):** First-class lifecycle methods (`OnNavigatedTo`, `OnNavigatedToAsync`, `CanNavigateFrom`, `CanNavigateFromAsync`).
+- **Standard DI Composition Root:** Centrally configured within `App.xaml.cs`.
 
 ---
 
-## 4. Cách Sử Dụng & Cài Đặt
+## 3. Limitations
 
-### Cách 1: Cài đặt trực tiếp từ mã nguồn vào Visual Studio / .NET CLI
+- Does not include a multi-window Dialog / Modal Popup service out of the box (focuses on single-window `ContentControl` navigation).
+- Does not bundle an `EventAggregator` / `Messenger` for cross-branch ViewModel communication.
+- `ContentControl` does not include default page transitions/animations. Add Storyboards or VisualStateManagers if transitions are required.
 
-Từ thư mục gốc chứa file `.template.config`:
+---
+
+## 4. Getting Started: Installation & Scaffolding
+
+### Step 1: Install the Template
+
+Open your terminal (PowerShell, Command Prompt, or Visual Studio Developer Terminal) and run:
 
 ```bash
-dotnet new install .
+# Install directly from NuGet
+dotnet new install WpfCleanArchNavTemplate
 ```
 
-Sau khi cài đặt:
-- **Từ dòng lệnh:**
+> **Note:** If you have the template source code locally, you can install it directly via:
+> ```bash
+> dotnet new install .
+> ```
+
+---
+
+### Step 2: Create a New Project
+
+#### Option A: Using the .NET CLI (Command Line)
+
+Scaffold a complete solution with your custom application name (e.g., `MyAwesomeApp`):
+
+```bash
+# 1. Create a new project from the template
+dotnet new wpf-clean-nav -n MyAwesomeApp
+
+# 2. Navigate into the newly created directory
+cd MyAwesomeApp
+
+# 3. Run the application
+dotnet run --project MyAwesomeApp.wpf/MyAwesomeApp.wpf.csproj
+```
+
+*The CLI automatically generates and renames all projects to match your solution name:*
+- `MyAwesomeApp.slnx`
+- `MyAwesomeApp.Domain`
+- `MyAwesomeApp.Application`
+- `MyAwesomeApp.Infrastructure`
+- `MyAwesomeApp.wpf`
+
+---
+
+#### Option B: Using Visual Studio
+
+1. Open Visual Studio and click **Create a new project**.
+2. In the top search bar, enter: `wpf-clean-nav` or `WPF Clean Architecture`.
+3. Select **WPF Clean Architecture MVVM Navigation Template** and click **Next**.
+4. Configure your **Project name** and storage location, then click **Create**.
+5. Visual Studio will generate the entire solution ready to run with `F5`.
+
+---
+
+### Template Management
+
+- **List installed templates:**
   ```bash
-  dotnet new wpf-clean-nav -n MyAwesomeApp
+  dotnet new list
   ```
-- **Từ Visual Studio:**
-  1. Mở Visual Studio > **Create a new project**.
-  2. Tìm kiếm `wpf-clean-nav` hoặc `WPF Clean Architecture`.
-  3. Đặt tên và bấm **Create**.
-
-### Cách 2: Đóng gói thành `.nupkg` và phân phối / Push GitHub
-
-1. Đóng gói template thành NuGet Package:
-   ```bash
-   dotnet pack package.csproj -o ./dist
-   ```
-2. Cài đặt từ package vừa tạo:
-   ```bash
-   dotnet new install ./dist/WpfCleanArchNavTemplate.1.0.0.nupkg
-   ```
-3. Push package lên GitHub Packages hoặc NuGet:
-   ```bash
-   dotnet nuget push ./dist/*.nupkg --api-key <YOUR_KEY> --source https://api.nuget.org/v3/index.json
-   ```
-
-### Gỡ cài đặt Template:
-```bash
-dotnet new uninstall WpfCleanArchNavTemplate
-```
+- **Update to the latest version:**
+  ```bash
+  dotnet new update
+  ```
+- **Uninstall the template:**
+  ```bash
+  dotnet new uninstall WpfCleanArchNavTemplate
+  ```
